@@ -31,16 +31,20 @@ Convertendo o arquivo do formato .tsv para .qza utilizando a semântica `NCBIAcc
 qiime tools import \
   --type NCBIAccessionIDs \
   --input-path id.tsv \
-  --output-path metadata_file_runs.qza
+  --output-path ids.qza
   ```
 
-2.  ** **
+2.  **Baixando os arquivos**
+
+Utilizando a função `qiime fondue get-all` é possível baixar o metadado e a sequência dos dados (raw sequencing data). NOte que é necessário a utilzação de e-mail válido pra tal fim.
 
 ```
 qiime fondue get-all \
-      --i-accession-ids metadata_file_runs.qza \
-      --p-email your_email@somewhere.com \
+      --i-accession-ids id.qza \
+      --p-email so*****@***mail.com \
       --p-retries 3 \
       --verbose \
       --output-dir fondue-output
-``` 
+```
+
+Como resultado quatro arquivos podem ser achados no diretório
