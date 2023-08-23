@@ -77,3 +77,51 @@ qiime dada2 denoise-paired \
   --o-table fondue-output/feature-table-0.qza \
   --o-denoising-stats fondue-output/dada2-stats.qza
 ```
+
+
+
+
+__________________
+AINDA PARA AJUSTAR
+qiime metadata tabulate \
+  --m-input-file fondue-output/dada2-stats.qza \
+  --o-visualization fondue-output/dada2-stats-summ.qzv
+
+qiime feature-table summarize \
+  --i-table fondue-output/feature-table-0.qza \
+  --o-visualization fondue-output/feature-table-0-summ.qzv
+
+qiime feature-table tabulate-seqs \
+  --i-data fondue-output/asv-sequences-0.qza \
+  --o-visualization fondue-output/asv-sequences-0-summ.qzv
+
+Classificador
+
+qiime feature-classifier classify-sklearn \
+  --i-classifier fondue-output/gg-13-8-99-nb-classifier.qza \
+  --i-reads fondue-output/asv-sequences-0.qza \
+  --p-n-jobs 7 \
+  --o-classification fondue-output/taxonomy.qza
+
+qiime metadata tabulate \
+  --m-input-file fondue-output/taxonomy.qza \
+  --o-visualization fondue-output/taxonomy.qzv
+
+qiime taxa filter-table \
+  --i-table fondue-output/feature-table-0.qza \
+  --i-taxonomy fondue-output/taxonomy.qza \
+  --p-mode contains \
+  --p-include p__ \
+  --p-exclude 'p__;,Chloroplast,Mitochondria' \
+  --o-filtered-table fondue-output/filtered-table-3.qza
+
+qiime feature-table filter-samples \
+  --i-table  fondue-output/filtered-table-3.qza \
+  --p-min-frequency 10000 \
+  --o-filtered-table  fondue-output/filtered-table-4.qza
+
+qiime taxa barplot \
+  --i-table  fondue-output/filtered-table-4.qza \
+  --i-taxonomy  fondue-output/taxonomy.qza \
+  --o-visualization  fondue-output/taxa-bar-plots-1.qzv
+
