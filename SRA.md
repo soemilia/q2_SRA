@@ -48,3 +48,32 @@ qiime fondue get-all \
 ```
 
 Como resultado quatro arquivos podem ser achados no diretório
+* metadata.qza: contém o metadado com a semantinca tipos `SRAMetadata`
+* paired_reads.qza: contém o reads pareados  com a semantinca tipos `SampleData[PairedEndSequencesWithQuality]`
+* single_reads.qza: contém o single reads com a semantinca tipos `SampleData[SequencesWithQuality]`
+* failed_runs.qza: contém os IDs falhados  com a semantinca tipos `SRAFailedIDs`
+
+  Nesse caso em questão, os dados foram coletados como paired_reads. Deste modo, somente o paired_reads.qza contém reads. Para vizuaizar e tabela pode ser utilizado o código a seguir:
+
+```
+qiime feature-table tabulate-seqs \
+  --i-data fondue-output/paired_reads.qza \
+  --o-visualization rep-seqs.qzv
+```
+  
+------------------
+Saíndo do plugin e utilzando outras funçoes
+
+  3. **Realizando a retirada de ruídos**
+
+
+```
+qiime dada2 denoise-paired \
+  --i-demultiplexed-seqs fondue-output/paired_reads.qza \
+  --p-trunc-len-f 250 \
+  --p-trunc-len-r 250 \
+  --p-n-threads 7 \
+  --o-representative-sequences fondue-output/asv-sequences-0.qza \
+  --o-table fondue-output/feature-table-0.qza \
+  --o-denoising-stats fondue-output/dada2-stats.qza
+```
