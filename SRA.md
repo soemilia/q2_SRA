@@ -81,12 +81,6 @@ qiime dada2 denoise-paired \
   --o-denoising-stats fondue-output/dada2-stats.qza
 ```
 
-
-
-
-__________________
-AINDA PARA AJUSTAR
-
 4. **Visualizar os dados de forma tabular**
    
 ```
