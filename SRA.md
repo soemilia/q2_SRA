@@ -64,6 +64,9 @@ qiime feature-table tabulate-seqs \
 ------------------
 Saíndo do plugin e utilzando outras funçoes
 
+
+# A partir daqui é análise dos dados
+
   3. **Realizando a retirada de ruídos**
 
 
@@ -83,30 +86,46 @@ qiime dada2 denoise-paired \
 
 __________________
 AINDA PARA AJUSTAR
+
+4. **Visualizar os dados de forma tabular**
+   
+```
 qiime metadata tabulate \
   --m-input-file fondue-output/dada2-stats.qza \
   --o-visualization fondue-output/dada2-stats-summ.qzv
-
+```
+5. **Visualizar os dados de forma tabular sumarizando as featrures**
+```
 qiime feature-table summarize \
   --i-table fondue-output/feature-table-0.qza \
   --o-visualization fondue-output/feature-table-0-summ.qzv
-
+```
+6. **Visualizar os dados de forma tabular sumarizando as ASV**
+```
 qiime feature-table tabulate-seqs \
   --i-data fondue-output/asv-sequences-0.qza \
   --o-visualization fondue-output/asv-sequences-0-summ.qzv
-
-Classificador
-
+```
+7. **Rodaando o classificador**
+classificador: 'gg-13-8-99-nb-classifier'
+jobs 7
+```
 qiime feature-classifier classify-sklearn \
   --i-classifier fondue-output/gg-13-8-99-nb-classifier.qza \
   --i-reads fondue-output/asv-sequences-0.qza \
   --p-n-jobs 7 \
   --o-classification fondue-output/taxonomy.qza
+```
 
+8. **Visualizando o resultado após o classificador**
+```
 qiime metadata tabulate \
   --m-input-file fondue-output/taxonomy.qza \
   --o-visualization fondue-output/taxonomy.qzv
+```
 
+9. **Filtrando a tabela**
+```
 qiime taxa filter-table \
   --i-table fondue-output/feature-table-0.qza \
   --i-taxonomy fondue-output/taxonomy.qza \
@@ -114,14 +133,20 @@ qiime taxa filter-table \
   --p-include p__ \
   --p-exclude 'p__;,Chloroplast,Mitochondria' \
   --o-filtered-table fondue-output/filtered-table-3.qza
-
+```
+10. **Visulizando a tabela após filtragem**
+```
 qiime feature-table filter-samples \
   --i-table  fondue-output/filtered-table-3.qza \
   --p-min-frequency 10000 \
   --o-filtered-table  fondue-output/filtered-table-4.qza
-
+```
+11. **Gerando o gráfico *taxa barplot***
+```
 qiime taxa barplot \
   --i-table  fondue-output/filtered-table-4.qza \
   --i-taxonomy  fondue-output/taxonomy.qza \
   --o-visualization  fondue-output/taxa-bar-plots-1.qzv
+```
+
 
